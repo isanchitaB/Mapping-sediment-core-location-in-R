@@ -1,21 +1,21 @@
 require(tidyverse)
 require(ggplot2)
 require(ggspatial)
-world_coordinates <- map_data("world")
+world_coordinates <- map_data("world") #importing available data on world coordinates in R environment
 View(world_coordinates)
 ggplot() +
   geom_map(
     data = world_coordinates, map = world_coordinates,
     aes(long, lat, map_id = region),color = "brown", fill= "lightyellow")+
-  geom_label(data = total, aes(total$X3, total$X5,label = total$X1),size =2.5, fill = 'white', hjust =1, nudge_x = 1)+
-  geom_point(data = total, aes(total$X3, total$X5, size = total$X6/3453, color = total$Ocean,label = rownames(total$X1)))+
+  geom_label(data = total, aes(total$X3, total$X5,label = total$X1),size =2.5, fill = 'white', hjust =1, nudge_x = 1)+ 
+  geom_point(data = total, aes(total$X3, total$X5, color = total$Ocean,label = rownames(total$X1)))+ #Adding external sampling location data on basemap
   scale_color_manual(values = c('red', 'darkgreen', 'darkblue', 'orange4', 'violetred'))+
   coord_cartesian(xlim = c(-180,180))+
-  labs(size = 'Normalized data fraction', x = "Longitude", y ="Latitude", color = "Ocean Region")+
+  labs(x = "Longitude", y ="Latitude", color = "Ocean Region")+
   annotation_north_arrow(location = "tl", which_north = "true", 
                          pad_x = unit(0.2, "in"), pad_y = unit(0.2, "in"),
                          style = north_arrow_fancy_orienteering)+
-  annotate("text", label = "North \nAtlantic \nOcean",x = -43, y = 20)+
+  annotate("text", label = "North \nAtlantic \nOcean",x = -43, y = 20)+ # Highlighting the major ocean basin
   annotate("text", label = "South \nAtlantic \nOcean",x = -18, y = -12)+
   annotate("text", label = "Southern Ocean",x = -25, y = -60)+
   annotate("text", label = "North \nPacific \nOcean",x = -150, y = 30)+
