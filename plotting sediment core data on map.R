@@ -2,15 +2,19 @@ require(tidyverse)
 require(ggplot2)
 require(ggspatial)#'ggspatial' package can calculate the distance between the points with different coordinates and assignment of accurate scale.
 #These are the required packages for making a plot with multiple layers.
+
 world_coordinates <- map_data("world") #importing available data on world coordinates in R environment
 View(world_coordinates)
+library(readxl) #for importing excel datasheet with sediment core sample latitute and longitude
+
+total <- readxl(total) # import data file to workspace.
 
 ggplot() +
   geom_map(
     data = world_coordinates, map = world_coordinates,
     aes(long, lat, map_id = region),color = "brown", fill= "lightyellow")+
   geom_label(data = total, aes(total$X3, total$X5,label = total$X1),size =2.5, fill = 'white', hjust =1, nudge_x = 1)+ 
-  geom_point(data = total, aes(total$X3, total$X5, color = total$Ocean,label = rownames(total$X1)))+ #Adding external sampling location data on basemap. 'Total' is the 
+  geom_point(data = total, aes(total$X3, total$X5,label = rownames(total$X1)))+ #Adding external sampling location data on basemap. 'Total' is the 
 #datafile which contains the input arranged in the form of latitude and logitudes as y and x. Label can be added based on core number or manually. 
   scale_color_manual(values = c('red', 'darkgreen', 'darkblue', 'orange4', 'violetred'))+
   coord_cartesian(xlim = c(-180,180))+
@@ -24,7 +28,7 @@ ggplot() +
   annotate("text", label = "North \nPacific \nOcean",x = -150, y = 30)+
   annotate("text", label = "South \nPacific \nOcean",x = -150, y = -38)+
   annotate("text", label = "Indian Ocean",x = 90, y = -38)+
-  annotate("text", label = "4000 Km",x = 175, y = -86)+
+  annotate("text", label = "4000 Km",x = 175, y = -86)+ # Adding scale manually based on calculated distance of 'Haversine formula' of ggspatial.
   annotate("rect", xmin = 120, xmax = 141, ymin = -88, ymax = -86, fill = "white", color ="black")+
   annotate("rect", xmin = 141, xmax = 162, ymin = -88, ymax = -86, fill = "black", color ="black")+
   theme(legend.position = c(0.15,0.13), legend.background = element_rect(color = FALSE, fill = FALSE),legend.box.background =element_rect(color = "Black", fill = "white")  ,  legend.direction = "vertical",legend.box = "horizontal",  legend.box.margin = margin(t=1, b=8, r=2, l=2, unit = "pt") )+
